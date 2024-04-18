@@ -4,92 +4,79 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
-
-use App\Http\Requests\CategoryFormRequest;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
-    public   function index()
+    public function list()
     {
-        return view('admin.category.index');
+        $data['header_title'] = 'Category';
+        $data['getRecord'] = Category::getRecord();
+
+
+        return view('admin.category.list', $data);
     }
-
-    public function create()
+    public function add()
     {
-        return view('admin.category.create');
+        $data['header_title'] = 'Category  Add';
+        return view('admin.category.add', $data);
     }
-    public function  store(CategoryFormRequest $request)
+    public function insert(Request $request)
     {
-        $validatedData = $request->validated();
+        request()->validate([
+            'slug' => 'required|unique:categories',
+            'name' => 'required|max:255',
+            'meta_title' => 'required|max:255',
 
-        $category = new  Category;
-        $category->name = $validatedData['name'];
-        $category->slug = Str::slug($validatedData['slug']);
-        $category->description = $validatedData['description'];
 
-        $uploadPath = 'uploads/category/';
-        if ($request->hasFile('image')) {
+        ]);
+        $category = new Category;
 
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
 
-            $file->move('uploads/category/', $filename);
-            $category->image = $uploadPath.$filename;
-        }
+        $category->name = trim($request->name);
+        $category->slug = trim($request->slug);
+        $category->meta_title = trim($request->meta_title);
+        $category->meta_keyword = trim($request->meta_keyword);
+        $category->meta_description = trim($request->meta_description);
+        $category->status = trim($request->status);
+        $category->created_by = Auth::user()->id;
+        $category->save();
+        return redirect('admin/category/list')->with('success', "Category Created Successfully");
+    }
+    public function edit($id)
+    {
+        $data['getRecord'] = Category::getSingle($id);
+        $data['header_title'] = 'Edit Category';
+        return view('admin.category.edit', $data);
+    }
+    public function update(Request $request, $id)
+    {
+        request()->validate([
+            'slug' => 'required|unique:categories,slug,' . $id,
+            'name' => 'required|max:255',
+            'meta_title' => 'required|max:255',
 
-        $category->meta_title = $validatedData['meta_title'];
-        $category->meta_keyword = $validatedData['meta_keyword'];
-        $category->meta_description = $validatedData['meta_description'];
-        $category->status = $request->status == true ? '1' : '0';
 
+        ]);
+        $category =  Category::getSingle($id);
+
+
+        $category->name = trim($request->name);
+        $category->slug = trim($request->slug);
+        $category->meta_title = trim($request->meta_title);
+        $category->meta_keyword = trim($request->meta_keyword);
+        $category->meta_description = trim($request->meta_description);
+        $category->status = trim($request->status);
+        $category->save();
+        return redirect('admin/category/list')->with('success', "Category Updated Successfully");
+    }
+    public function delete($id)
+    {
+        $category =  Category::getSingle($id);
+        $category->is_delete = 1;
         $category->save();
 
-        return redirect('admin/category')->with('message', 'Category Added Successfully');
-    }
-
-    public function edit(Category $category)
-    {
-        return view('admin.category.edit', compact('category'));
-    }
-    public function update(CategoryFormRequest $request, $category)
-    {
-        $validatedData = $request->validated();
-
-        $category = Category::findOrFail($category);
-
-
-        $category->name = $validatedData['name'];
-        $category->slug = Str::slug($validatedData['slug']);
-        $category->description = $validatedData['description'];
-        $uploadPath = 'uploads/category/';
-
-        if ($request->hasFile('image')) {
-
-            $path = 'uploads/category/' . $category->image;
-
-            if (Storage::exists($path)) {
-                Storage::delete($path);
-            }
-
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-
-            $file->move('uploads/category/', $filename);
-            $category->image = $uploadPath.$filename;
-        }
-
-        $category->meta_title = $validatedData['meta_title'];
-        $category->meta_keyword = $validatedData['meta_keyword'];
-        $category->meta_description = $validatedData['meta_description'];
-        $category->status = $request->status == true ? '1' : '0';
-
-        $category->update();
-
-        return redirect('admin/category')->with('message', 'Category Updated   Successfully');
+        return redirect()->back()->with('success', "Category Deleted Successfully");
     }
 }

@@ -20,6 +20,7 @@ class CartCount extends Component
             return  $this->cartCount = 0;
         }
     }
+    
     public function render()
     {
         $this->cartCount = $this->checkCartCout();

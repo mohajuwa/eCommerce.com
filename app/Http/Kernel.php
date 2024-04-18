@@ -35,6 +35,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
+
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -52,6 +53,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, class-string|string>
      */
+    
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

@@ -1,87 +1,75 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+use App\Models\User;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::get('admin', [AuthController::class, 'login_admin']);
+Route::post('admin', [AuthController::class, 'auth_login_admin']);
+Route::get('admin/logout', [AuthController::class, 'logout_admin']);
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Auth::routes();
+Route::group(['middleware' => 'isAdmin'], function () {
 
 
 
-Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class, 'index']);
-Route::get('/collections', [App\Http\Controllers\Frontend\FrontendController::class, 'categories']);
-Route::get('/collections/{category_slug}', [App\Http\Controllers\Frontend\FrontendController::class, 'products']);
-Route::get('/collections/{category_slug}/{product_slug}', [App\Http\Controllers\Frontend\FrontendController::class, 'productveiw']);
+    Route::get('admin/dashboard', [DashboardController::class, 'dashboard']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('wishlist', [App\Http\Controllers\Frontend\WishlistController::class, 'index']);
-    Route::get('cart', [App\Http\Controllers\Frontend\CartController::class, 'index']);
+
+    Route::get('admin/admin/list', [AdminController::class, 'list']);
+    Route::get('admin/admin/add', [AdminController::class, 'add']);
+    Route::post('admin/admin/add', [AdminController::class, 'insert']);
+    Route::get('admin/admin/edit/{id}', [AdminController::class, 'edit']);
+    Route::post('admin/admin/edit/{id}', [AdminController::class, 'update']);
+    Route::get('admin/admin/delete/{id}', [AdminController::class, 'delete']);
+
+
+
+
+    Route::get('admin/category/list', [CategoryController::class, 'list']);
+    Route::get('admin/category/add', [CategoryController::class, 'add']);
+    Route::post('admin/category/add', [CategoryController::class, 'insert']);
+    Route::get('admin/category/edit/{id}', [CategoryController::class, 'edit']);
+    Route::post('admin/category/edit/{id}', [CategoryController::class, 'update']);
+    Route::get('admin/category/delete/{id}', [CategoryController::class, 'delete']);
+
+
+
+    Route::get('admin/sub_category/list', [SubCategoryController::class, 'list']);
+    Route::get('admin/sub_category/add', [SubCategoryController::class, 'add']);
+    Route::post('admin/sub_category/add', [SubCategoryController::class, 'insert']);
+    Route::get('admin/sub_category/edit/{id}', [SubCategoryController::class, 'edit']);
+    Route::post('admin/sub_category/edit/{id}', [SubCategoryController::class, 'update']);
+    Route::get('admin/sub_category/delete/{id}', [SubCategoryController::class, 'delete']);
+
+
+
+    Route::get('admin/product/list', [ProductController::class, 'list']);
+    Route::get('admin/product/add', [ProductController::class, 'add']);
+    Route::post('admin/product/add', [ProductController::class, 'insert']);
+    Route::get('admin/product/edit/{id}', [ProductController::class, 'edit']);
+    Route::post('admin/product/edit/{id}', [ProductController::class, 'update']);
+    Route::get('admin/product/delete/{id}', [ProductController::class, 'delete']);
+
+
+
+
+    Route::get('admin/brand/list', [BrandController::class, 'list']);
+    Route::get('admin/brand/add', [BrandController::class, 'add']);
+    Route::post('admin/brand/add', [BrandController::class, 'insert']);
+    Route::get('admin/brand/edit/{id}', [BrandController::class, 'edit']);
+    Route::post('admin/brand/edit/{id}', [BrandController::class, 'update']);
+    Route::get('admin/brand/delete/{id}', [BrandController::class, 'delete']);
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index']);
-
-    Route::controller(App\Http\Controllers\Admin\SliderController::class)->group(function () {
-        Route::get('sliders', 'index');
-        Route::get('sliders/create', 'create');
-        Route::post('sliders/create', 'store');
-        Route::get('sliders/{slider}/edit', 'edit');
-        Route::put('sliders/{slider}', 'update');
-        Route::get('sliders/{slider}/delete', 'destroy');
-    });
-    // Category routes 
-    Route::controller(App\Http\Controllers\Admin\CategoryController::class)->group(function () {
-        Route::get('/category', 'index');
-        Route::get('/category/create', 'create');
-        Route::post('/category', 'store');
-        Route::get('/category/{category}/edit', 'edit');
-        Route::put('/category/{category}/', 'update');
-    });
-
-    Route::controller(App\Http\Controllers\Admin\ProductController::class)->group(function () {
-        Route::get('/products', 'index');
-        Route::get('/products/create', 'create');
-        Route::post('/products', 'store');
-        Route::get('/products/{product}/edit', 'edit');
-        Route::put('/products/{product}', 'update');
-        Route::get('products/{product_id}/delete', 'destroy');
-
-        Route::get('product-image/{product_image_id}/delete', 'destroyImage');
 
 
-        Route::post('product-color/{prod_color_id}', 'updateProdColorQty');
-
-        Route::get('product-color/{prod_color_id}/delete', 'deleteProdColor');
-    });
-
-
-
-    Route::get('/brands', App\Livewire\Admin\Brand\Index::class);
-
-
-    Route::controller(App\Http\Controllers\Admin\ColorController::class)->group(function () {
-        Route::get('/colors', 'index');
-        Route::get('/colors/create', 'create');
-        Route::post('/colors/create', 'store');
-        Route::get('/colors/{color}/edit', 'edit');
-        Route::put('/colors/{color_id}', 'update');
-        Route::get('/colors/{color_id}/delete', 'destroy');
-    });
+Route::get('/', function () {
+    return view('welcome');
 });

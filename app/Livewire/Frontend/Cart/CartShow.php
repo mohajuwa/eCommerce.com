@@ -20,11 +20,11 @@ class CartShow extends Component
                 if ($productColor->quantity >= $cartData->quantity) {
                     if ($cartData->quantity > 1) {
                         $cartData->decrement('quantity');
-                        $this->dispatch('message', [
-                            'text' => 'Quantity Updated',
-                            'type' => 'success',
-                            'status' => 200
-                        ]);
+                        // $this->dispatch('message', [
+                        //     'text' => 'Quantity Updated',
+                        //     'type' => 'success',
+                        //     'status' => 200
+                        // ]);
                     } else {
                         $this->dispatch('message', [
                             'text' => 'At Least 1 Quantity ',
@@ -40,16 +40,16 @@ class CartShow extends Component
                     ]);
                 }
             } else {
-                if ($cartData->product->quantity > $cartData->quantity) {
+                if ($cartData->product->quantity >= $cartData->quantity) {
 
                     if ($cartData->quantity > 1) {
                         $cartData->decrement('quantity');
 
-                        $this->dispatch('message', [
-                            'text' => 'Quantity Updated ',
-                            'type' => 'success',
-                            'status' => 200
-                        ]);
+                        // $this->dispatch('message', [
+                        //     'text' => 'Quantity Updated ',
+                        //     'type' => 'success',
+                        //     'status' => 200
+                        // ]);
                     } else {
                         $this->dispatch('message', [
                             'text' => 'At Least 1 Quantity ',
@@ -59,7 +59,7 @@ class CartShow extends Component
                     }
                 } else {
                     $this->dispatch('message', [
-                        'text' => 'Only ' . $cartData->product->quantity . '  Quantity Available',
+                        'text' => 'Only ' . $cartData->product->quantity . ' Quantity Available',
                         'type' => 'warning',
                         'status' => 201
                     ]);
@@ -83,11 +83,11 @@ class CartShow extends Component
                 if ($productColor->quantity > $cartData->quantity) {
 
                     $cartData->increment('quantity');
-                    $this->dispatch('message', [
-                        'text' => 'Quantity Updated',
-                        'type' => 'success',
-                        'status' => 200
-                    ]);
+                    // $this->dispatch('message', [
+                    //     'text' => 'Quantity Updated',
+                    //     'type' => 'success',
+                    //     'status' => 200
+                    // ]);
                 } else {
                     $this->dispatch('message', [
                         'text' => 'Only  ' . $productColor->quantity . '  Quantity Available',
@@ -99,11 +99,11 @@ class CartShow extends Component
                 if ($cartData->product->quantity > $cartData->quantity) {
                     $cartData->increment('quantity');
 
-                    $this->dispatch('message', [
-                        'text' => 'Quantity Updated',
-                        'type' => 'success',
-                        'status' => 200
-                    ]);
+                    // $this->dispatch('message', [
+                    //     'text' => 'Quantity Updated',
+                    //     'type' => 'success',
+                    //     'status' => 200
+                    // ]);
                 } else {
                     $this->dispatch('message', [
                         'text' => 'Only  ' . $cartData->product->quantity . '  Quantity Available',

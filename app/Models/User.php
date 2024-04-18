@@ -21,8 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-    ];
+        'is_admin',
+        'status',
 
+    ];
+    public function userDetail()
+    {
+        return $this->hasOne(UserDetail::class, 'user_id', 'id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -42,4 +48,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    static public function getAdmin(){
+        return User::select('users.*')
+        ->where('is_admin','=',1)
+        ->where('is_delete','=',0)
+        ->orderBy('id','desc')
+        ->get();
+    }
+    static public function getSingle($id){
+        return User::find($id);
+    }
 }

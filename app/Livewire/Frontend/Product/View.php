@@ -56,29 +56,6 @@ class View extends Component
             return false;
         }
     }
-    public function colorSelected($productColorId)
-    {
-        $this->productColorId = $productColorId;
-        $productColor =  $this->product->productColors()->where('id', $productColorId)->first();
-        $this->productColorSelectedQuantity = $productColor->quantity;
-
-        if ($this->productColorSelectedQuantity == 0) {
-            $this->productColorSelectedQuantity = 'outOfStock';
-        }
-    }
-    public function decrementQuantity()
-    {
-        if ($this->quantityCount > 1) {
-            $this->quantityCount--;
-        }
-    }
-    public function incrementQuantity()
-    {
-        if ($this->quantityCount < 10) {
-            $this->quantityCount++;
-        }
-    }
-
     public function addToCart(int $productId)
     {
         if (Auth::check()) {
@@ -152,7 +129,7 @@ class View extends Component
 
 
                         if ($this->product->quantity > 0) {
-                            if ($this->product->quantity > $this->quantityCount) {
+                            if ($this->product->quantity >= $this->quantityCount) {
 
                                 // Insert Product to Cart
                                 Cart::create([
@@ -163,7 +140,7 @@ class View extends Component
                                 ]);
 
                                 $this->dispatch('CartAddedUpdated');
-                                
+
                                 $this->dispatch('message', [
                                     'text' => 'Product Added To Cart Successfully',
                                     'type' => 'success',
@@ -171,7 +148,7 @@ class View extends Component
                                 ]);
                             } else {
                                 $this->dispatch('message', [
-                                    'text' => 'Only   ' . $this->product->quantity . '   Quantity Available',
+                                    'text' => 'Only   ' . $this->product->quantity . 'JKSJ   Quantity Available',
                                     'type' => 'warning',
                                     'status' => 404
                                 ]);
@@ -200,6 +177,30 @@ class View extends Component
             ]);
         }
     }
+    public function colorSelected($productColorId)
+    {
+        $this->productColorId = $productColorId;
+        $productColor =  $this->product->productColors()->where('id', $productColorId)->first();
+        $this->productColorSelectedQuantity = $productColor->quantity;
+
+        if ($this->productColorSelectedQuantity == 0) {
+            $this->productColorSelectedQuantity = 'outOfStock';
+        }
+    }
+    public function decrementQuantity()
+    {
+        if ($this->quantityCount > 1) {
+            $this->quantityCount--;
+        }
+    }
+    public function incrementQuantity()
+    {
+        if ($this->quantityCount < 10) {
+            $this->quantityCount++;
+        }
+    }
+
+
     public function mount($category, $product)
     {
         $this->category = $category;

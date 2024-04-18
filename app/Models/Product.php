@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 use App\Models\ProductColor;
 use App\Models\ProductImage;
 use App\Models\Category;
@@ -12,38 +14,56 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'products';
+    protected $table = 'product';
 
     protected $fillable =
     [
         'category_id',
-        'name',
+        'sub_category_id',
+        'brand_id',
+        'title',
         'slug',
-        'brand',
-        'small_description',
+        'old_price',
+        'price',
+        'short_description',
         'description',
-        'original_price',
-        'selling_price',
-        'quantity',
-        'trending',
+        'addetional_information',
+        'shopping_returns',
         'status',
-        'meta_title',
-        'meta_keyword',
-        'meta_description',
+        'created_by',
+        'is_delete',
 
 
     ];
-
-    public function category()
+    static public function checkSlug($slug)
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return self::where('slug', $slug)->count();
     }
-    public function productImages()
+    static public function getSingle($id)
     {
-        return $this->hasMany(ProductImage::class, 'product_id', 'id');
+        return self::find($id);
     }
-    public function productColors()
+    static public function getRecord()
     {
-        return $this->hasMany(ProductColor::class, 'product_id', 'id');
+        return self::select('product.*', 'users.name as created_by_name', 'categories.name as category_name',
+        'brand.name as brand_name')
+            ->join('categories', 'categories.id', '=', 'product.category_id')
+            ->join('brand', 'brand.id', '=', 'product.brand_id')
+            ->join('users', 'users.id', '=', 'product.created_by')
+            ->where('product.is_delete', '=', 0)
+            ->orderBy('product.id', 'desc')
+            ->paginate(15);
     }
+    // public function category(): BelongsTo
+    // {
+    //     return $this->belongsTo(Category::class, 'category_id', 'id');
+    // }
+    // public function productImages()
+    // {
+    //     return $this->hasMany(ProductImage::class, 'product_id', 'id');
+    // }
+    // public function productColors()
+    // {
+    //     return $this->hasMany(ProductColor::class, 'product_id', 'id');
+    // }
 }
