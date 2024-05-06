@@ -6,8 +6,8 @@ Pro eCommerce website Using Laravel 10 .
 :------------:                                               
 
 <p float="left">
-  <img src="assets/scrshots/admin_dash.png" width="200" />
-   <img src="assets/scrshots/home_page.png" width="200" />
+  <img src="assets/scrshots/admin_dash.png" width="500" />
+   <img src="assets/scrshots/home_page.png" width="500" />
   
 </p>
 
