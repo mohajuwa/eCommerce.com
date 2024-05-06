@@ -6,8 +6,8 @@ Medical app UI Design Flutter .
 :------------:                                               
 
 <p float="left">
-  <img src="assets/srcshots/admin_dash.png" width="200" />
-   <img src="assets/srcshots/home_page.png" width="200" />
+  <img src="assets/scrshots/admin_dash.png" width="200" />
+   <img src="assets/scrshots/home_page.png" width="200" />
   
 </p>
 
