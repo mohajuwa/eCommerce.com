@@ -23,7 +23,7 @@ Pro eCommerce website Using Laravel 10 .
 
 
 # Installation: 
-              git clone https://github.com/mohajuwa/ecomLar.git
+              git clone https://github.com/mohajuwa/eCommerce.com.git
     
               
 
