@@ -49,14 +49,23 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    static public function getAdmin(){
+    public static function getAdmin()
+    {
         return User::select('users.*')
-        ->where('is_admin','=',1)
-        ->where('is_delete','=',0)
-        ->orderBy('id','desc')
-        ->get();
+            ->where('is_admin', '=', 1)
+            ->where('is_delete', '=', 0)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
     }
-    static public function getSingle($id){
+    public static function checkEmail($email)
+    {
+        return User::select('users.*')
+            ->where('is_delete', '=', 0)
+            ->where('email', '=', $email)
+            ->first();
+    }
+    public static function getSingle($id)
+    {
         return User::find($id);
     }
 }

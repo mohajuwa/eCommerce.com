@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('public/assets/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/plugins/summernote/summernote-bs4.min.css') }}">
+
 
     @yield('style')
 </head>
@@ -41,6 +43,8 @@
     <script src="{{ url('public/assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap -->
     <script src="{{ url('public/assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('public/assets/plugins/summernote/summernote-bs4.min.js') }}"></script>
+
     <!-- AdminLTE -->
     <script src="{{ url('public/assets/dist/js/adminlte.js') }}"></script>
 

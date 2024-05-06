@@ -61,9 +61,11 @@
 
                                     <td>
                                         <a href="{{ url('admin/brand/edit/' . $value->id) }}"
-                                            class="btn btn-primary">Edit</a>
+                                            class="btn btn-primary"><i
+                                                            class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/brand/delete/' . $value->id) }}"
-                                            class="btn btn-danger">delete</a>
+                                            class="btn btn-danger"><i
+                                                            class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -83,5 +85,5 @@
 </section>
 @endsection
 @section('script')
-<script src="{{ asset('assets/dist/js/pages/dashboard3.js') }}"></script>
+
 @endsection

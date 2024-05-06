@@ -35,8 +35,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Title</th>
-                                    <th>Category</th>
-                                    <th>Sub Category</th>
+                              
                                     <th>Brand</th>
                                     <th>Price</th>
                                     <th>Created By</th>
@@ -52,11 +51,9 @@
 
                                     <td>{{ $value->id }}</td>
                                     <td>{{ $value->title }}</td>
-                                    <td>{{ $value->category_name }}</td>
-                                    <td>{{ $value->category_name }}</td>
                                     <td>{{ $value->brand_name }}</td>
                                     <td>{{ $value->meta_keyword }}</td>
-                                    <td>{{ $value->created_by_name }}</td>
+                                    <td><span class="badge bg-secondary">{{ $value->created_by_name }}</span>
 
 
 
@@ -67,9 +64,11 @@
 
                                     <td>
                                         <a href="{{ url('admin/product/edit/' . $value->id) }}"
-                                            class="btn btn-primary">Edit</a>
+                                            class="btn btn-primary"><i
+                                                            class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/product/delete/' . $value->id) }}"
-                                            class="btn btn-danger">delete</a>
+                                            class="btn btn-danger"><i
+                                                            class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -78,8 +77,7 @@
                             </tbody>
                         </table>
                         <div style="padding: 10px;float: right;">
-                            {{-- {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links()
-                            !!} --}}
+                            {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -90,5 +88,5 @@
 </section>
 @endsection
 @section('script')
-<script src="{{ asset('assets/dist/js/pages/dashboard3.js') }}"></script>
+
 @endsection

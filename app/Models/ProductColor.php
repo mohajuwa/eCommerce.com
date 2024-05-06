@@ -9,17 +9,20 @@ class ProductColor extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_colors';
+    protected $table = 'product_color';
 
     protected $fillable = [
         'product_id',
         'color_id',
-        'quantity'
 
     ];
 
-    public function color()
+    public static function DeleteRecord($productId)
     {
-        return $this->belongsTo(Color::class, 'color_id', 'id');
+        return self::where('product_id', "=", $productId)->delete();
+    }
+    public function getColor()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
     }
 }

@@ -79,6 +79,17 @@ class SubCategoryController extends Controller
         $sub_category->save();
         return redirect('admin/sub_category/list')->with('success', "Sub Category Updated Successfully");
     }
+    public function getSubCategory(Request $request)
+    {
+        $category_id = $request->id;
+        $get_sub_category = SubCategory::getRecordSubCategory($category_id);
+        $html = '<option value="">Select</option>'; // Initialize the HTML with the default option
+        foreach ($get_sub_category as $value) {
+            $html .= '<option value="' . $value->id . '">' . $value->name . '</option>';
+        }
+        return response()->json(['html' => $html]); // Return JSON response directly
+    }
+
     public function delete($id)
     {
         $sub_category =  SubCategory::getSingle($id);

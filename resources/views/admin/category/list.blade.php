@@ -37,8 +37,8 @@
                                     <th>Name</th>
                                     <th>Slug</th>
                                     <th>Meta Title</th>
-                                    <th>Meta Description</th>
-                                    <th>Meta Keywords</th>
+                                    {{-- <th>Meta Description</th>
+                                    <th>Meta Keywords</th> --}}
                                     <th>Created By</th>
                                     <th>Status</th>
                                     <th>Created Date</th>
@@ -54,9 +54,9 @@
                                     <td>{{ $value->name }}</td>
                                     <td>{{ $value->slug }}</td>
                                     <td>{{ $value->meta_title }}</td>
-                                    <td>{{ $value->meta_description }}</td>
-                                    <td>{{ $value->meta_keyword }}</td>
-                                    <td>{{ $value->created_by_name }}</td>
+                                    {{-- <td>{{ $value->meta_description }}</td>
+                                    <td>{{ $value->meta_keyword }}</td> --}}
+                                    <td><span class="badge bg-secondary">{{ $value->created_by_name }}</span>
 
 
 
@@ -67,9 +67,11 @@
 
                                     <td>
                                         <a href="{{ url('admin/category/edit/' . $value->id) }}"
-                                            class="btn btn-primary">Edit</a>
+                                            class="btn btn-primary"><i
+                                                            class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/category/delete/' . $value->id) }}"
-                                            class="btn btn-danger">delete</a>
+                                            class="btn btn-danger"><i
+                                                            class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -89,5 +91,5 @@
 </section>
 @endsection
 @section('script')
-<script src="{{ asset('assets/dist/js/pages/dashboard3.js') }}"></script>
+
 @endsection

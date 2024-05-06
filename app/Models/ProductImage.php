@@ -11,10 +11,22 @@ class ProductImage extends Model
 
     protected $table = 'product_images';
 
-    protected $fillable=
+    protected $fillable =
     [
         'product_id',
-        'image'
+        'image_name'
 
     ];
+    public function getImage()
+    {
+        if (!empty($this->image_name) && file_exists('upload/product/' . $this->image_name)) {
+            return url('upload/product/' . $this->image_name);
+        } else {
+            return "";
+        }
+    }
+    static public function getSingle($productId)
+    {
+        return self::find($productId);
+    }
 }

@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Product;
-use App\Models\Brand;
 
 class SubCategory extends Model
 {
     use HasFactory;
-
 
     protected $table = 'sub_categories';
     protected $fillable = [
@@ -22,34 +19,46 @@ class SubCategory extends Model
         'meta_description',
         'status',
         'is_delete',
-        'created_by'
-
+        'created_by',
 
     ];
 
-    static public function getRecord()
+    public static function getRecord()
     {
         return self::select('sub_categories.*', 'users.name as created_by_name', 'categories.name as category_name')
             ->join('categories', 'categories.id', '=', 'sub_categories.category_id')
             ->join('users', 'users.id', '=', 'sub_categories.created_by')
             ->where('sub_categories.is_delete', '=', 0)
             ->orderBy('sub_categories.id', 'desc')
-            ->paginate(15);
+            ->paginate(50);
     }
-    static public function getSingle($id)
+    public static function getRecordSubCategory($category_id)
+    {
+        return self::select('sub_categories.*')
+            ->join('users', 'users.id', '=', 'sub_categories.created_by')
+            ->where('sub_categories.is_delete', '=', 0)
+            ->where('sub_categories.status', '=', 0)
+            ->where('sub_categories.category_id', '=', $category_id)
+            ->orderBy('sub_categories.name', 'asc')
+            ->get();
+    }
+    public static function getSingle($id)
     {
         return self::find($id);
     }
-    public function products()
+    public static function getSingleSlug($slug)
     {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+        return self::where('slug', '=', $slug)
+            ->where('sub_categories.is_delete', "=", 0)
+            ->where('sub_categories.status', "=", 0)
+            ->first();
     }
-    public function relatedProducts()
+    public function totalProducts()
     {
-        return $this->hasMany(Product::class, 'category_id', 'id')->latest()->take(16);
+        return $this->hasMany(Product::class, 'sub_category_id')
+            ->where('product.is_delete', '=', 0)
+            ->where('product.status', '=', 0)
+            ->count();
     }
-    public function brands()
-    {
-        return $this->hasMany(Brand::class, 'category_id', 'id')->where('status', '0');
-    }
+
 }

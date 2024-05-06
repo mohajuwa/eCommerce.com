@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,6 @@ class CategoryController extends Controller
     {
         $data['header_title'] = 'Category';
         $data['getRecord'] = Category::getRecord();
-
 
         return view('admin.category.list', $data);
     }
@@ -29,13 +29,13 @@ class CategoryController extends Controller
             'name' => 'required|max:255',
             'meta_title' => 'required|max:255',
 
-
         ]);
         $category = new Category;
 
+        $nameSlug = trim($request->name);
 
         $category->name = trim($request->name);
-        $category->slug = trim($request->slug);
+        $category = Str::slug($nameSlug, "-");
         $category->meta_title = trim($request->meta_title);
         $category->meta_keyword = trim($request->meta_keyword);
         $category->meta_description = trim($request->meta_description);
@@ -57,10 +57,8 @@ class CategoryController extends Controller
             'name' => 'required|max:255',
             'meta_title' => 'required|max:255',
 
-
         ]);
-        $category =  Category::getSingle($id);
-
+        $category = Category::getSingle($id);
 
         $category->name = trim($request->name);
         $category->slug = trim($request->slug);
@@ -73,7 +71,7 @@ class CategoryController extends Controller
     }
     public function delete($id)
     {
-        $category =  Category::getSingle($id);
+        $category = Category::getSingle($id);
         $category->is_delete = 1;
         $category->save();
 

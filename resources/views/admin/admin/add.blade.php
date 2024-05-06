@@ -63,5 +63,5 @@
     </section>
 @endsection
 @section('script')
-    <script src="{{ asset('assets/dist/js/pages/dashboard3.js') }}"></script>
+    
 @endsection
