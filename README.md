@@ -1,8 +1,8 @@
-# ModWir - Group 3 Graduation Project in Ibb City - Yemen
+# ModWir - Pro eCommerce website 
 
-Medical app UI Design Flutter .
+Pro eCommerce website Using Laravel 10 .
 # ScreenShots 
-   Themes    |                                                  
+   Preview    |                                                  
 :------------:                                               
 
 <p float="left">
@@ -22,13 +22,8 @@ Medical app UI Design Flutter .
 
 
 # Installation: 
-    Steps:
-      step 1:
-              git clone https://github.com/mohajuwa/medh2.git
-      step 2:
-              pub get
-      step 3: 
-              change the version of flutter in your file(pupspec.yaml)
+              git clone https://github.com/mohajuwa/ecomLar.git
+    
               
 
 
