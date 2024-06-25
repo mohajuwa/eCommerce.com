@@ -17,7 +17,15 @@
             <div class="col-12">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Add new product</h3>
+                        <h3 class="card-title">Add new product </h3>
+                        <div class="float-end" style="text-align: right;">
+                            <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
+                                Back
+                                <i class="nav-icon fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                    </div>
                     </div>
                     <form action="" method="POST">
                         {{ csrf_field() }}
@@ -90,6 +98,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="display: block">Trendy Product<span
+                                                style="color:red;"></span></label>
+                                        <input type="checkbox" name="is_trendy">
+                                        <div style="color:red">{{ $errors->first('is_trendy') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <hr>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -113,6 +135,9 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
 
                             <hr>
                             <div class="row">
@@ -151,9 +176,8 @@
                                                         <td>
                                                             <button type="button" name=""
                                                                 class="btn btn-primary ">Add</button>
-                                                            <button type="button" name=""
-                                                                class="btn btn-danger "> <i
-                                                            class="nav-icon fas fa-trash"></i></button>
+                                                            <button type="button" name="" class="btn btn-danger "> <i
+                                                                    class="nav-icon fas fa-trash"></i></button>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -161,9 +185,8 @@
                                                         <td><input type="text" name="" class="form-control"></td>
                                                         <td>
 
-                                                            <button type="button" name=""
-                                                                class="btn btn-danger "> <i
-                                                            class="nav-icon fas fa-trash"></i></button>
+                                                            <button type="button" name="" class="btn btn-danger "> <i
+                                                                    class="nav-icon fas fa-trash"></i></button>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -171,9 +194,8 @@
                                                         <td><input type="text" name="" class="form-control"></td>
                                                         <td>
 
-                                                            <button type="button" name=""
-                                                                class="btn btn-danger "> <i
-                                                            class="nav-icon fas fa-trash"></i></button>
+                                                            <button type="button" name="" class="btn btn-danger "> <i
+                                                                    class="nav-icon fas fa-trash"></i></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>

@@ -8,7 +8,7 @@
                 <h1>Sub Category List</h1>
             </div>
             <div class="col-sm-6" style="text-align: right">
-                <a href="{{ url('admin/sub_category/add') }}" class="btn  btn-primary">Add new Sub Category</a>
+                <a href="{{ url('admin/sub_category/add') }}" class="btn btn-sm  btn-primary">Add new Sub Category</a>
             </div>
         </div>
     </div>
@@ -21,9 +21,9 @@
             <div class="col-12">
                 @include('admin.layouts._message')
 
-                <div class="card ">
+                <div class="card  card-info ">
                     <div class="card-header">
-                        <h3 class="card-title">Sub Category List</h3>
+                        <h3 class="cardtitle">Sub Category List</h3>
 
                     </div>
 
@@ -72,10 +72,10 @@
 
                                     <td>
                                         <a href="{{ url('admin/sub_category/edit/' . $value->id) }}"
-                                            class="btn btn-primary"><i
+                                            class="btn btn-sm btn-primary"><i
                                                             class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/sub_category/delete/' . $value->id) }}"
-                                            class="btn btn-danger"><i
+                                            class="btn btn-sm btn-danger"><i
                                                             class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>

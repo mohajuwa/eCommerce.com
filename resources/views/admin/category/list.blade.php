@@ -8,7 +8,7 @@
                 <h1>Category List</h1>
             </div>
             <div class="col-sm-6" style="text-align: right">
-                <a href="{{ url('admin/category/add') }}" class="btn  btn-primary">Add new Category</a>
+                <a href="{{ url('admin/category/add') }}" class="btn btn-sm  btn-primary">Add new Category</a>
             </div>
         </div>
     </div>
@@ -21,9 +21,9 @@
             <div class="col-12">
                 @include('admin.layouts._message')
 
-                <div class="card ">
+                <div class="card  card-info ">
                     <div class="card-header">
-                        <h3 class="card-title">Category List</h3>
+                        <h3 class="cardtitle">Category List</h3>
 
                     </div>
 
@@ -33,16 +33,19 @@
                             class="table table-striped table-responsive-lg  table-responsive-sm table-responsive-md table-responsive-xxl">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Meta Title</th>
-                                    {{-- <th>Meta Description</th>
-                                    <th>Meta Keywords</th> --}}
-                                    <th>Created By</th>
-                                    <th>Status</th>
-                                    <th>Created Date</th>
-                                    <th>Action</th>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Image</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Slug</th>
+                                    <th class="text-center">Meta Title</th>
+                                    {{-- <th class="text-center">Meta Description</th>
+                                    <th class="text-center">Meta Keywords</th> --}}
+                                    <th class="text-center">Created By</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Home</th>
+                                    <th class="text-center">Menu</th>
+                                    <th class="text-center">Created Date</th>
+                                    <th class="text-center">Action</th>
 
                                 </tr>
                             </thead>
@@ -50,28 +53,42 @@
                                 @foreach ($getRecord as $value)
                                 <tr>
 
-                                    <td>{{ $value->id }}</td>
-                                    <td>{{ $value->name }}</td>
-                                    <td>{{ $value->slug }}</td>
-                                    <td>{{ $value->meta_title }}</td>
-                                    {{-- <td>{{ $value->meta_description }}</td>
-                                    <td>{{ $value->meta_keyword }}</td> --}}
-                                    <td><span class="badge bg-secondary">{{ $value->created_by_name }}</span>
+                                    <td class="text-center">{{ $value->id }}</td>
+                                    <td class="text-center">
+                                        @if (!empty($value->getImage()))
+                                        <img src="{{$value->getImage()}}" style="width: 60px" alt="">
+
+                                        @endif
+                                    </td>
+                                    <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center">{{ $value->slug }}</td>
+                                    <td class="text-center">{{ $value->meta_title }}</td>
+                                    {{-- <td class="text-center">{{ $value->meta_description }}</td>
+                                    <td class="text-center">{{ $value->meta_keyword }}</td> --}}
+                                    <td class="text-center"><span class="badge   bg-gray">{{ $value->created_by_name
+                                            }}</span>
 
 
 
-                                    <td><span class="badge bg-{{ $value->status == 0 ? 'info' : 'danger' }}">{{
+                                    <td class="text-center"><span
+                                            class="badge bg-{{ $value->status == 0 ? 'info' : 'secondary' }}">{{
                                             $value->status == 0 ? 'Active' : 'Inactive' }}</span>
                                     </td>
-                                    <td>{{ date('d-m-y', strtotime($value->created_at)) }}</td>
+                                    <td class="text-center"><span
+                                            class="badge bg-{{ $value->is_home == 1 ? 'info' : 'secondary' }}">{{
+                                            $value->is_home == 1 ? 'YES' : 'NO' }}</span>
+                                    </td>
+                                    <td class="text-center"><span
+                                            class="badge bg-{{ $value->is_menu == 1 ? 'info' : 'secondary' }}">{{
+                                            $value->is_menu == 1 ? 'YES' : 'NO' }}</span>
+                                    </td>
+                                    <td class="text-center">{{ date('d-m-y', strtotime($value->created_at)) }}</td>
 
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ url('admin/category/edit/' . $value->id) }}"
-                                            class="btn btn-primary"><i
-                                                            class="nav-icon fas fa-edit"></i></a>
+                                            class="btn btn-sm btn-primary"><i class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/category/delete/' . $value->id) }}"
-                                            class="btn btn-danger"><i
-                                                            class="nav-icon fas fa-trash"></i></a>
+                                            class="btn btn-sm btn-danger"><i class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach

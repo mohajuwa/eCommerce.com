@@ -1,13 +1,15 @@
-<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
+    @php
+    $getSystemSettingApp = App\Models\SystemSettingModel::getSingle();
+
+    @endphp
     <div class="brand-link text-center  ">
-        {{-- <img src="{{ url('public/assets/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
-        <span class="brand-text ">Ecommerce</span>
+        <img  src="{{ $getSystemSettingApp->getFevIcon() }}"  alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text ">{{ $getSystemSettingApp->website_name }}</span>
     </div>
 
-    <!-- Sidebar -->
+
     <div class="sidebar">
 
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -19,7 +21,7 @@
                 <a href="#" class="d-block">{{ Auth::user()->name }}</a>
             </div>
         </div>
-        <!-- SidebarSearch Form -->
+
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
                 <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
@@ -31,7 +33,7 @@
             </div>
         </div>
 
-        <!-- Sidebar Menu -->
+
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
@@ -49,6 +51,25 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Admin
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ url('admin/customer/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'customer') active @endif @if (Request::segment(2) == 'customer' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'customer' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Customer
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/order/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'order') active @endif @if (Request::segment(2) == 'order' && Request::segment(3) == 'detail') bg-warning @endif  @if (Request::segment(2) == 'order' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-cash-register"></i>
+                        <p>
+                            Order
                         </p>
                     </a>
                 </li>
@@ -116,7 +137,83 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/slider/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'slider') active @endif @if (Request::segment(2) == 'slider' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'slider' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas  fa-copy"></i>
+                        <p>
+                            Slider
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/partner/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'partner') active @endif @if (Request::segment(2) == 'partner' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'partner' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas  fa-handshake"></i>
+                        <p>
+                            Partner Logo
+                        </p>
+                    </a>
+                </li>
 
+                <li class="nav-item">
+                    <a href="{{ url('admin/contact_us') }}"
+                        class="nav-link @if (Request::segment(2) == 'contact_us') active @endif @if (Request::segment(2) == 'contact_us' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'contact_us' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas  fa-phone"></i>
+                        <p>
+                            Contact us
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ url('admin/page/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'page') active @endif @if (Request::segment(2) == 'page' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'page' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Page
+                        </p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="{{ url('admin/blog_category/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'blog_category') active @endif @if (Request::segment(2) == 'blog_category' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'blog_category' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            Blog Category
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/blog/list') }}"
+                        class="nav-link @if (Request::segment(2) == 'blog') active @endif @if (Request::segment(2) == 'blog' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'blog' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-blog"></i>
+                        <p>
+                            Blog
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/system-setting') }}"
+                        class="nav-link @if (Request::segment(2) == 'system-setting') active @endif @if (Request::segment(2) == 'system-setting' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'system-setting' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            System Settings
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ url('admin/home-setting') }}"
+                        class="nav-link @if (Request::segment(2) == 'home-setting') active @endif @if (Request::segment(2) == 'home-setting' && Request::segment(3) == 'add') bg-warning @endif  @if (Request::segment(2) == 'home-setting' && Request::segment(3) == 'edit') bg-secondary @endif">
+                        <i class="nav-icon fas fa-tools"></i>
+                        <p>
+                            Home Settings
+                        </p>
+                    </a>
+                </li>
                 {{-- <li class="nav-item">
                     <a href="pages/widgets.html" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -344,7 +441,7 @@
                         </li>
                     </ul>
                 </li> --}}
-                <li class="nav-item fixed-bottom p-2">
+                <li class="nav-item ">
                     <a href="{{ url('admin/logout') }}" class="nav-link  bg-danger">
                         <i class="nav-icon fas    fa-sign-out-alt"></i>
                         <p>
@@ -354,7 +451,7 @@
                 </li>
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
+
     </div>
-    <!-- /.sidebar -->
+
 </aside>

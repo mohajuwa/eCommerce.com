@@ -18,8 +18,18 @@
                 <div class="card   card-info">
                     <div class="card-header">
                         <h3 class="card-title">Edit Category</h3>
+                        </h3>
+                        <div class="float-end" style="text-align: right;">
+                            <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
+                                Back
+                                <i class="nav-icon fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
                     </div>
-                    <form action="" method="POST">
+
+
+                    <form action="" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="card-body">
                             <div class="form-group">
@@ -43,6 +53,29 @@
                                         value="1">Inactive</option>
 
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Image </label>
+                                <input type="file" class="form-control" name="image_name">
+                                <div style="color:red">{{ $errors->first('image_name') }}</div>
+                                <img src="{{$getRecord->getImage()}}" style="width: 200px;" alt="Category Image">
+                            </div>
+                            <div class="form-group">
+                                <label>Button Name<span style="color:red;"></span></label>
+                                <input type="text" class="form-control"
+                                    value="{{ old('button_name', $getRecord->button_name) }}" name="button_name"
+                                    placeholder="Enter Button Name">
+                                <div style="color:red">{{ $errors->first('button_name') }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block">Home Screen<span style="color:red;"></span></label>
+                                <input type="checkbox" {{!empty($getRecord->is_home)? 'checked':''}} name="is_home">
+                                <div style="color:red">{{ $errors->first('is_home') }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block">Menu<span style="color:red;"></span></label>
+                                <input type="checkbox" {{!empty($getRecord->is_menu)? 'checked':''}} name="is_menu">
+                                <div style="color:red">{{ $errors->first('is_menu') }}</div>
                             </div>
                             <div class="form-group">
                                 <label>Meta title <span style="color:red;">*</span></label>

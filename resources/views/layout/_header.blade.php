@@ -27,13 +27,23 @@
                     <li>
                         <a href="#">Links</a>
                         <ul>
-                            <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
-                            <li><a href="{{ url('wishlist') }}"><i class="icon-heart-o"></i>My Wishlist
-                                    <span>(3)</span></a></li>
+                            <li><a href="tel:{{ $getSystemSettingApp->phone }}"><i class="icon-phone"></i>Call:
+                                    {{ $getSystemSettingApp->phone }}</a>
+                            </li>
+                            @if (Auth::check())
+                                <li><a href="{{ url('my-wishlist') }}"><i class="icon-heart-o"></i>My Wishlist
+                                        <span>(3)</span></a></li>
+                            @endif
                             <li><a href="{{ url('about') }}">About Us</a></li>
                             <li><a href="{{ url('contact') }}">Contact Us</a></li>
-                            <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a>
-                            </li>
+
+                            @if (!empty(Auth::check()))
+                                <li><a href="{{ url('user/dashboard') }}"><i
+                                            class=" icon-user"></i>{{ Auth::user()->name }}</a></li>
+                            @else
+                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a>
+                                </li>
+                            @endif
                         </ul>
                     </li>
                 </ul>
@@ -48,12 +58,12 @@
                     </button>
 
                     <a href="{{ url('') }}" class="logo">
-                        <img src="{{ url('assets/images/logo.png') }}" width="105" height="25">
+                        <img src="{{ $getSystemSettingApp->getLogo() }}" width="105" height="25">
                     </a>
 
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
-                            <li class=" active">
+                            <li class="{{(Request::segment(1) == '') ? 'active' : ''}}">
                                 <a href="{{ url('/') }}">Home</a>
 
 
@@ -101,7 +111,16 @@
                                     </div>
                                 </div>
                             </li>
-
+                            @php
+                            $getCategoriesHeaderMenu = App\Models\Category::getRecordMenuHeader();
+                            @endphp
+                            @if (!empty($getCategoriesHeaderMenu->count()))
+                            @foreach ($getCategoriesHeaderMenu as $menu)
+                            <li class="{{(Request::segment(1) == $menu->slug) ? 'active' : ''}}">
+                                <a href="{{ url($menu->slug) }}">{{ $menu->name }}</a>
+                            </li>
+                            @endforeach
+                            @endif
 
                         </ul>
                     </nav>

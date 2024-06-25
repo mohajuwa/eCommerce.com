@@ -50,9 +50,16 @@
 
     <!-- OPTIONAL SCRIPTS -->
     <script src="{{ url('public/assets/plugins/chart.js/Chart.min.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
-    {{-- <script src="{{ url('public/assets/dist/js/demo.js') }}"></script> --}}
-
+    <script>
+        $(function () {
+          // Summernote
+          $('.editor').summernote({
+            height: 300
+          })
+      
+        
+        })
+      </script>
     @yield('script')
 </body>
 

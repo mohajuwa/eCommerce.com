@@ -40,7 +40,6 @@ class ProductController extends Controller
             'title' => 'required|max:255',
             'category_id' => 'required', // Example validation for category_id
             'sub_category_id' => 'required', // Example validation for sub_category_id
-            'brand_id' => 'required', // Example validation for brand_id
             'sku' => 'required|max:50', // Example validation for sku
             'old_price' => 'nullable|numeric', // Example validation for old_price
             'price' => 'required|numeric', // Example validation for price
@@ -67,6 +66,7 @@ class ProductController extends Controller
         $product->shopping_returns = $request->shopping_returns;
         $product->status = $request->status;
         $product->created_by = Auth::user()->id;
+        $product->is_trendy = !empty($request->is_trendy) ? 1 : 0;
 
         $checkSlug = Product::checkSlug($slug);
         $product->save();
@@ -106,7 +106,6 @@ class ProductController extends Controller
             'title' => 'required|max:255',
             'category_id' => 'required', // Example validation for category_id
             'sub_category_id' => 'required', // Example validation for sub_category_id
-            'brand_id' => 'required', // Example validation for brand_id
             'sku' => 'required|max:50', // Example validation for sku
             'old_price' => 'nullable|numeric', // Example validation for old_price
             'price' => 'required|numeric', // Example validation for price
@@ -116,6 +115,7 @@ class ProductController extends Controller
             'shopping_returns' => 'nullable|max:255', // Example validation for shopping_returns
             'status' => 'required|in:0,1', // Example validation for status
         ]);
+
         $product = Product::getSingle($productId);
 
         if (!empty($product)) {
@@ -126,7 +126,6 @@ class ProductController extends Controller
             $product->sku = trim($request->sku); // Added SKU
             if (empty($request->slug)) {
                 $product->slug = Str::slug($request->title, "-");
-
             } else {
                 $product->slug = Str::slug($request->slug); // Added Slug
 
@@ -138,6 +137,8 @@ class ProductController extends Controller
             $product->addetional_information = trim($request->addetional_information);
             $product->shopping_returns = trim($request->shopping_returns);
             $product->status = trim($request->status);
+            $product->is_trendy = !empty($request->is_trendy) ? 1 : 0;
+
             $product->save();
             ProductColor::DeleteRecord($product->id);
             if (!empty($request->color_id)) {
@@ -174,6 +175,8 @@ class ProductController extends Controller
                         $imageUpload->image_extension = $ext;
                         $imageUpload->product_id = $product->id;
                         $imageUpload->save();
+                    } else {
+                        redirect()->back()->with('error', "Image not valid");
                     }
                 }
             }

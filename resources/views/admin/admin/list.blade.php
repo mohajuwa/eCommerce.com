@@ -8,7 +8,7 @@
                 <h1>Admin List</h1>
             </div>
             <div class="col-sm-6" style="text-align: right">
-                <a href="{{ url('admin/admin/add') }}" class="btn  btn-primary">Add new admin</a>
+                <a href="{{ url('admin/admin/add') }}" class="btn btn-sm  btn-primary">Add new admin</a>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 @include('admin.layouts._message')
 
-                <div class="card">
+                <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Admin List</h3>
 
@@ -52,10 +52,10 @@
                                     </td>
                                     <td>
                                         <a href="{{ url('admin/admin/edit/' . $value->id) }}"
-                                            class="btn btn-primary"><i
+                                            class="btn btn-sm btn-primary"><i
                                                             class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/admin/delete/' . $value->id) }}"
-                                            class="btn btn-danger"><i
+                                            class="btn btn-sm btn-danger"><i
                                                             class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>

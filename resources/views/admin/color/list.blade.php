@@ -8,7 +8,7 @@
                 <h1>Color List</h1>
             </div>
             <div class="col-sm-6" style="text-align: right">
-                <a href="{{ url('admin/color/add') }}" class="btn  btn-primary">Add new Color</a>
+                <a href="{{ url('admin/color/add') }}" class="btn btn-sm  btn-primary">Add new Color</a>
             </div>
         </div>
     </div>
@@ -21,9 +21,9 @@
             <div class="col-12">
                 @include('admin.layouts._message')
 
-                <div class="card ">
+                <div class="card  card-info ">
                     <div class="card-header">
-                        <h3 class="card-title">Color List</h3>
+                        <h3 class="cardtitle">Color List</h3>
 
                     </div>
 
@@ -72,10 +72,10 @@
 
                                     <td>
                                         <a href="{{ url('admin/color/edit/' . $value->id) }}"
-                                            class="btn btn-primary"><i
+                                            class="btn btn-sm btn-primary"><i
                                                             class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/color/delete/' . $value->id) }}"
-                                            class="btn btn-danger"><i
+                                            class="btn btn-sm btn-danger"><i
                                                             class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>

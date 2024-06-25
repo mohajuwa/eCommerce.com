@@ -45,5 +45,4 @@ class ShippingChargeModel extends Model
             ->where('shipping_charge.expare_date', '>=', date('Y-m-d '))
             ->first();
     }
-
 }

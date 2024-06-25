@@ -17,6 +17,7 @@
         "livewire/livewire": "^3.3",
         "maatwebsite/excel": "^3.1",
         "mindscms/laravelshoppingcart": "^2.1",
+        "paypal/paypal-checkout-sdk": "^1.0",
         "pusher/pusher-php-server": "^7.2",
         "smalot/pdfparser": "^2.9",
         "srmklive/paypal": "~3.0",

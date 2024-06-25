@@ -1,8 +1,6 @@
 @extends('admin.layouts.app')
 
 @section('content')
-
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -10,274 +8,399 @@
                     <h1 class="m-0">Dashboard </h1>
                     @include('admin.layouts._message')
 
-                </div><!-- /.col -->
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Dashboard v3</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
 
-    <!-- Main content -->
+
+
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="card">
+
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Orders</span>
+                            <span class="info-box-number">{{ $TotalOrders }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Today's Orders</span>
+                            <span class="info-box-number">{{ $TodayTotalOrders }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="clearfix hidden-md-up"></div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Payments</span>
+                            <span class="info-box-number">${{ number_format($TotalAmount, 2) }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon  bg-primary elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Today's Payments</span>
+                            <span class="info-box-number">${{ number_format($TodayTotalAmount, 2) }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Customers</span>
+                            <span class="info-box-number">{{ $TotalCustomers }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon  bg-dark  elevation-1"><i class="fas fa-users"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Today's Customers</span>
+                            <span class="info-box-number">{{ $TodayTotalCustomers }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card card-info">
                         <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Online Store Visitors</h3>
-                                <a href="javascript:void(0);">View Report</a>
+                                <h3 class="card-title">Sales</h3>
+                                <select class="form-control changheYear" style="width: 100px;">
+                                    @for ($i = 2022; $i <= date('Y'); $i++)
+                                        <option {{ $year == $i ? 'selected' : '' }} value="{{ $i }}">
+                                            {{ $i }}</option>
+                                    @endfor
+
+                                </select>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="d-flex">
                                 <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">820</span>
-                                    <span>Visitors Over Time</span>
+                                    <span class="text-bold text-lg">${{ number_format($totalAmount, 2) }}</span>
+                                    <span>Sales Over Time</span>
                                 </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> 12.5%
-                                    </span>
-                                    <span class="text-muted">Since last week</span>
-                                </p>
+
                             </div>
-                            <!-- /.d-flex -->
+
 
                             <div class="position-relative mb-4">
-                                <canvas id="visitors-chart" height="200"></canvas>
+                                <div class="chartjs-size-monitor">
+                                    <div class="chartjs-size-monitor-expand">
+                                        <div class=""></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
+                                </div>
+
+                                <canvas id="sales-chart-order" height="200" width="795"
+                                    style="display: block; width: 795px; height: 200px;"
+                                    class="chartjs-render-monitor"></canvas>
                             </div>
 
                             <div class="d-flex flex-row justify-content-end">
                                 <span class="mr-2">
-                                    <i class="fas fa-square text-primary"></i> This Week
+                                    <i class="fas fa-square text-primary"></i> Orders
                                 </span>
 
-                                <span>
-                                    <i class="fas fa-square text-gray"></i> Last Week
+                                <span class="mr-2">
+                                    <i class="fas fa-square text-gray"></i> Customers
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fas fa-square text-danger"></i> Amount
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <!-- /.card -->
+                </div>
 
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">Products</h3>
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Recently Added Products</h3>
+
                             <div class="card-tools">
-                                <a href="#" class="btn btn-tool btn-sm">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                                <a href="#" class="btn btn-tool btn-sm">
-                                    <i class="fas fa-bars"></i>
-                                </a>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Samsung TV
+                                            <span class="badge badge-warning float-right">$1800</span></a>
+                                        <span class="product-description">
+                                            Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">Bicycle
+                                            <span class="badge badge-info float-right">$700</span></a>
+                                        <span class="product-description">
+                                            26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">
+                                            Xbox One <span class="badge badge-danger float-right">
+                                                $350
+                                            </span>
+                                        </a>
+                                        <span class="product-description">
+                                            Xbox One Console Bundle with Halo Master Chief Collection.
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="javascript:void(0)" class="product-title">PlayStation 4
+                                            <span class="badge badge-success float-right">$399</span></a>
+                                        <span class="product-description">
+                                            PlayStation 4 500GB Console (PS4)
+                                        </span>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <a href="javascript:void(0)" class="uppercase">View All Products</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header border-0">
+                            <h3 class="card-title">Latest Orders</h3>
+                            <div class="card-tools">
+
                             </div>
                         </div>
                         <div class="card-body table-responsive p-0">
+
                             <table class="table table-striped table-valign-middle">
                                 <thead>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Sales</th>
-                                        <th>More</th>
+                                        <th>#</th>
+                                        <th>Company Name</th>
+
+                                        <th>Order Number</th>
+                                        <th>Country</th>
+                                        <th>PymentMethod</th>
+                                        <th>Date</th>
+                                        <th>Total Amount</th>
+                                        <th>Action</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ url('public/assets/dist/img/default-150x150.png') }}"
-                                                alt="Product 1" class="img-circle img-size-32 mr-2">
-                                            Some Product
-                                        </td>
-                                        <td>$13 USD</td>
-                                        <td>
-                                            <small class="text-success mr-1">
-                                                <i class="fas fa-arrow-up"></i>
-                                                12%
-                                            </small>
-                                            12,000 Sold
-                                        </td>
-                                        <td>
-                                            <a href="#" class="text-muted">
-                                                <i class="fas fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ url('public/assets/dist/img/default-150x150.png') }}"
-                                                alt="Product 1" class="img-circle img-size-32 mr-2">
-                                            Another Product
-                                        </td>
-                                        <td>$29 USD</td>
-                                        <td>
-                                            <small class="text-warning mr-1">
-                                                <i class="fas fa-arrow-down"></i>
-                                                0.5%
-                                            </small>
-                                            123,234 Sold
-                                        </td>
-                                        <td>
-                                            <a href="#" class="text-muted">
-                                                <i class="fas fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ url('public/assets/dist/img/default-150x150.png') }}"
-                                                alt="Product 1" class="img-circle img-size-32 mr-2">
-                                            Amazing Product
-                                        </td>
-                                        <td>$1,230 USD</td>
-                                        <td>
-                                            <small class="text-danger mr-1">
-                                                <i class="fas fa-arrow-down"></i>
-                                                3%
-                                            </small>
-                                            198 Sold
-                                        </td>
-                                        <td>
-                                            <a href="#" class="text-muted">
-                                                <i class="fas fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ url('public/assets/dist/img/default-150x150.png') }}"
-                                                alt="Product 1" class="img-circle img-size-32 mr-2">
-                                            Perfect Item
-                                            <span class="badge bg-danger">NEW</span>
-                                        </td>
-                                        <td>$199 USD</td>
-                                        <td>
-                                            <small class="text-success mr-1">
-                                                <i class="fas fa-arrow-up"></i>
-                                                63%
-                                            </small>
-                                            87 Sold
-                                        </td>
-                                        <td>
-                                            <a href="#" class="text-muted">
-                                                <i class="fas fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($LatestOrders as $value)
+                                        <tr>
+
+                                            <td>{{ $value->id }}</td>
+                                            <td>{{ $value->company_name }}</td>
+
+                                            <td>{{ $value->order_number }}</td>
+
+
+
+                                            <td>{{ $value->country }}</td>
+                                            <td>{{ $value->payment_method }}</td>
+                                            <td>{{ date('d-m-y h:i A', strtotime($value->created_at)) }}</td>
+                                            <td>${{ number_format($value->total_amount, 2) }}</td>
+
+
+
+                                            <td>
+                                                <a href="{{ url('admin/order/detail/' . $value->id) }}"
+                                                    class="btn btn-warning btn-sm">
+                                                    <i class="  small fas fa-eye"></i>
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.col-md-6 -->
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Sales</h3>
-                                <a href="javascript:void(0);">View Report</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">$18,230.00</span>
-                                    <span>Sales Over Time</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> 33.1%
-                                    </span>
-                                    <span class="text-muted">Since last month</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
 
-                            <div class="position-relative mb-4">
-                                <canvas id="sales-chart" height="200"></canvas>
-                            </div>
-
-                            <div class="d-flex flex-row justify-content-end">
-                                <span class="mr-2">
-                                    <i class="fas fa-square text-primary"></i> This year
-                                </span>
-
-                                <span>
-                                    <i class="fas fa-square text-gray"></i> Last year
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.card -->
-
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">Online Store Overview</h3>
-                            <div class="card-tools">
-                                <a href="#" class="btn btn-sm btn-tool">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-tool">
-                                    <i class="fas fa-bars"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                                <p class="text-success text-xl">
-                                    <i class="ion ion-ios-refresh-empty"></i>
-                                </p>
-                                <p class="d-flex flex-column text-right">
-                                    <span class="font-weight-bold">
-                                        <i class="ion ion-android-arrow-up text-success"></i> 12%
-                                    </span>
-                                    <span class="text-muted">CONVERSION RATE</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
-                            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                                <p class="text-warning text-xl">
-                                    <i class="ion ion-ios-cart-outline"></i>
-                                </p>
-                                <p class="d-flex flex-column text-right">
-                                    <span class="font-weight-bold">
-                                        <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-                                    </span>
-                                    <span class="text-muted">SALES RATE</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
-                            <div class="d-flex justify-content-between align-items-center mb-0">
-                                <p class="text-danger text-xl">
-                                    <i class="ion ion-ios-people-outline"></i>
-                                </p>
-                                <p class="d-flex flex-column text-right">
-                                    <span class="font-weight-bold">
-                                        <i class="ion ion-android-arrow-down text-danger"></i> 1%
-                                    </span>
-                                    <span class="text-muted">REGISTRATION RATE</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-md-6 -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
 
+    </div>
+
+    </div>
 @endsection
 @section('script')
     <script src="{{ url('public/assets/dist/js/pages/dashboard3.js') }}"></script>
+    <script type="text/javascript">
+        $('.changheYear').change(function() {
+            var year = $(this).val();
+            window.location.href = "{{ url('admin/dashboard?year=') }}" + year;
+        })
+        var ticksStyle = {
+            fontColor: '#495057',
+            fontStyle: 'bold'
+        }
+
+        var mode = 'index'
+        var intersect = true
+
+        var $salesChart = $('#sales-chart-order')
+        // eslint-disable-next-line no-unused-vars
+        var salesChart = new Chart($salesChart, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December'
+                ],
+                datasets: [{
+                        backgroundColor: '#007bff',
+                        borderColor: '#007bff',
+                        data: [{{ $getTotalOrdersMonth }}]
+                    },
+                    {
+                        backgroundColor: '#ced4da',
+                        borderColor: '#ced4da',
+                        data: [{{ $getTotalCustomersMonth }}]
+                    },
+                    {
+                        backgroundColor: 'red',
+                        borderColor: 'red',
+                        data: [{{ $getTotalAmountMonth }}]
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                hover: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        // display: false,
+                        gridLines: {
+                            display: true,
+                            lineWidth: '4px',
+                            color: 'rgba(0, 0, 0, .2)',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: $.extend({
+                            beginAtZero: true,
+
+                            // Include a dollar sign in the ticks
+                            callback: function(value) {
+                                if (value >= 1000) {
+                                    value /= 1000
+                                    value += 'k'
+                                }
+
+                                return '$' + value
+                            }
+                        }, ticksStyle)
+                    }],
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: ticksStyle
+                    }]
+                }
+            }
+        })
+    </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\ProductReviewModel;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,6 @@ class ProductController extends Controller
 
         $getCategory = Category::getSingleSlug($slug);
         $getSubCategory = SubCategory::getSingleSlug($subSlug);
-        $data['getColor'] = Color::getRecordActive();
 
         // $data['getSize'] = ProductSize::getColors();
 
@@ -31,7 +31,7 @@ class ProductController extends Controller
             $data['meta_description'] = $getProductSingle->meta_description;
             $data['getProduct'] = $getProductSingle;
             $data['getRelatedProducts'] = Product::getRelatedProducts($getProductSingle->id, $getProductSingle->sub_category_id);
-
+            $data['getReviewProduct'] = ProductReviewModel::getReviewProduct($getProductSingle->id);
             return view('product.detail', $data);
         } else if (!empty($getCategory) && !empty($getSubCategory)) {
             $data['getSubCategoryFilter'] = SubCategory::getRecordSubCategory($getCategory->id);
@@ -101,7 +101,7 @@ class ProductController extends Controller
             200
         );
     }
-    
+
     public function getProductSearch(Request $request)
     {
         // dd($data['getSubCategoryFilter']);

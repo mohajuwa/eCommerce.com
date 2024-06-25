@@ -8,7 +8,7 @@
                 <h1>Shipping Charge List</h1>
             </div>
             <div class="col-sm-6" style="text-align: right">
-                <a href="{{ url('admin/shipping_charge/add') }}" class="btn  btn-primary">Add new Shipping Charge</a>
+                <a href="{{ url('admin/shipping_charge/add') }}" class="btn btn-sm  btn-primary">Add new Shipping Charge</a>
             </div>
         </div>
     </div>
@@ -21,9 +21,9 @@
             <div class="col-12">
                 @include('admin.layouts._message')
 
-                <div class="card ">
+                <div class="card  card-info ">
                     <div class="card-header">
-                        <h3 class="card-title">Shipping Charge List</h3>
+                        <h3 class="cardtitle">Shipping Charge List</h3>
 
                     </div>
 
@@ -77,9 +77,9 @@
 
                                     <td>
                                         <a href="{{ url('admin/shipping_charge/edit/' . $value->id) }}"
-                                            class="btn btn-primary"><i class="nav-icon fas fa-edit"></i></a>
+                                            class="btn btn-sm btn-primary"><i class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/shipping_charge/delete/' . $value->id) }}"
-                                            class="btn btn-danger"><i class="nav-icon fas fa-trash"></i></a>
+                                            class="btn btn-sm btn-danger"><i class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach

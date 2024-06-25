@@ -8,7 +8,7 @@
                 <h1>Product List</h1>
             </div>
             <div class="col-sm-6" style="text-align: right">
-                <a href="{{ url('admin/product/add') }}" class="btn  btn-primary">Add new Product</a>
+                <a href="{{ url('admin/product/add') }}" class="btn btn-sm  btn-primary">Add new Product</a>
             </div>
         </div>
     </div>
@@ -21,9 +21,9 @@
             <div class="col-12">
                 @include('admin.layouts._message')
 
-                <div class="card ">
+                <div class="card  card-info ">
                     <div class="card-header">
-                        <h3 class="card-title">Product List</h3>
+                        <h3 class="cardtitle">Product List</h3>
 
                     </div>
 
@@ -35,11 +35,13 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Title</th>
-                              
+
                                     <th>Brand</th>
+                                    <th>Category</th>
                                     <th>Price</th>
                                     <th>Created By</th>
                                     <th>Status</th>
+                                    <th>Trendy</th>
                                     <th>Created Date</th>
                                     <th>Action</th>
 
@@ -52,7 +54,10 @@
                                     <td>{{ $value->id }}</td>
                                     <td>{{ $value->title }}</td>
                                     <td>{{ $value->brand_name }}</td>
-                                    <td>{{ $value->meta_keyword }}</td>
+                                    <td>{{ $value->category_name }}</td>
+
+                                    <td>${{ number_format($value->price,2) }}</td>
+
                                     <td><span class="badge bg-secondary">{{ $value->created_by_name }}</span>
 
 
@@ -60,15 +65,17 @@
                                     <td><span class="badge bg-{{ $value->status == 0 ? 'info' : 'danger' }}">{{
                                             $value->status == 0 ? 'Active' : 'Inactive' }}</span>
                                     </td>
+                                    <td class="text-center"><span
+                                            class="badge bg-{{ $value->is_trendy == 1 ? 'info' : 'secondary' }}">{{
+                                            $value->is_trendy == 1 ? 'YES' : 'NO' }}</span>
+                                    </td>
                                     <td>{{ date('d-m-y', strtotime($value->created_at)) }}</td>
 
                                     <td>
                                         <a href="{{ url('admin/product/edit/' . $value->id) }}"
-                                            class="btn btn-primary"><i
-                                                            class="nav-icon fas fa-edit"></i></a>
+                                            class="btn btn-sm btn-primary"><i class="nav-icon fas fa-edit"></i></a>
                                         <a href="{{ url('admin/product/delete/' . $value->id) }}"
-                                            class="btn btn-danger"><i
-                                                            class="nav-icon fas fa-trash"></i></a>
+                                            class="btn btn-sm btn-danger"><i class="nav-icon fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach

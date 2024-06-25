@@ -17,7 +17,15 @@
             <div class="col-12">
                 <div class="card   card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Add new color</h3>
+                        <h3 class="card-title">Add new color </h3>
+                        <div class="float-end" style="text-align: right;">
+                            <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
+                                Back
+                                <i class="nav-icon fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                    </div>
                     </div>
                     <form action="" method="POST">
                         {{ csrf_field() }}

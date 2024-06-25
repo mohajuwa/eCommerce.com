@@ -7,6 +7,7 @@ use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class Product extends Model
@@ -33,6 +34,27 @@ class Product extends Model
         'is_delete',
 
     ];
+
+    public static function getMyWishlist($userId)
+    {
+        $return = Product::select('product.*')
+            ->join('users', 'users.id', '=', 'product.created_by')
+            ->join('product_wishlist', 'product_wishlist.product_id', '=', 'product.id')
+            ->join('categories', 'categories.id', '=', 'product.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'product.sub_category_id')
+            ->where('product.is_delete', '=', 0)
+            ->where('product.status', '=', 0)
+            ->where('product_wishlist.user_id', '=', $userId)
+            ->groupBy('product.id')
+            ->orderBy('product.id', 'desc')
+            ->paginate(30);
+
+        return $return;
+    }
+    public static function checkWishlist($product_id)
+    {
+        return WishlistModel::checkAlready($product_id, Auth::user()->id);
+    }
     public static function checkSlug($slug)
     {
         return self::where('slug', $slug)->count();
@@ -98,7 +120,6 @@ class Product extends Model
             ->orderBy('product.id', 'desc')
             ->limit(10)
             ->get();
-
 
         return $return;
     }
@@ -180,6 +201,55 @@ class Product extends Model
 
         return $return;
     }
+
+    public static function getProductTrendy()
+    {
+        $return = Product::select(
+            'product.*',
+            'users.name as created_by_name',
+            'categories.name as category_name',
+            'categories.slug as category_slug',
+            'sub_categories.name as sub_category_name',
+            'sub_categories.slug as sub_category_slug'
+        )
+            ->join('users', 'users.id', '=', 'product.created_by')
+            ->join('categories', 'categories.id', '=', 'product.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'product.sub_category_id')
+            ->where('product.is_delete', '=', 0)
+            ->where('product.status', '=', 0)
+            ->where('product.is_trendy', '=', 1);
+        $return = $return->groupBy('product.id')
+            ->orderBy('product.id', 'desc')
+            ->limit(20)
+            ->get();
+
+        return $return;
+    }
+    public static function getRecentArrival()
+    {
+        $return = Product::select(
+            'product.*',
+            'users.name as created_by_name',
+            'categories.name as category_name',
+            'categories.slug as category_slug',
+            'sub_categories.name as sub_category_name',
+            'sub_categories.slug as sub_category_slug'
+        )
+            ->join('users', 'users.id', '=', 'product.created_by')
+            ->join('categories', 'categories.id', '=', 'product.category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'product.sub_category_id')
+            ->where('product.is_delete', '=', 0)
+            ->where('product.status', '=', 0);
+        if (!empty(Request::get('category_id'))) {
+            $return = $return->where('product.category_id', '=', Request::get('category_id'));
+        }
+        $return = $return->groupBy('product.id')
+            ->orderBy('product.id', 'desc')
+            ->limit(8)
+            ->get();
+
+        return $return;
+    }
     public static function getImageSingle($productId)
     {
         return ProductImage::where('product_id', "=", $productId)->orderBy('order_by', 'asc')->first();
@@ -211,12 +281,24 @@ class Product extends Model
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
     }
-    // public function productImages()
-    // {
-    //     return $this->hasMany(ProductImage::class, 'product_id', 'id');
-    // }
-    // public function productColors()
-    // {
-    //     return $this->hasMany(ProductColor::class, 'product_id', 'id');
-    // }
+    public function getTotalReview()
+    {
+        return $this->hasMany(ProductReviewModel::class, 'product_id')
+            ->join('users', 'users.id', '=', 'product_review.user_id')
+            ->count();
+    }
+
+    public function getReviewRating($product_id)
+    {
+        $avgRating = ProductReviewModel::getRatingAVG($product_id);
+
+        // Ensure the average rating is within the valid range (0 to 5)
+        $avgRating = max(0, min(5, $avgRating));
+
+        // Convert the average rating to a percentage
+        $percentage = ($avgRating / 5) * 100;
+
+        // Ensure the percentage is within the valid range (0 to 100)
+        return max(0, min(100, $percentage));
+    }
 }

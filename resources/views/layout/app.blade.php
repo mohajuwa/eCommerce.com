@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ !empty($meta_title) ? $meta_title . '| ModWir-eCommerce' : '' }}</title>
     @if (!empty($meta_keywords))
-    <meta name="keywords" content="{{ $meta_keywords }}">
+        <meta name="keywords" content="{{ $meta_keywords }}">
     @endif
     @if (!empty($meta_description))
-    <meta name="description" content="{{ $meta_description }}">
+        <meta name="description" content="{{ $meta_description }}">
     @endif
-    <link rel="shortcut icon" href="{{ url('assets/images/icons/favicon.ico') }}">
+
+    @php
+        $getSystemSettingApp = App\Models\SystemSettingModel::getSingle();
+    @endphp
+    <link rel="shortcut icon" href="{{ $getSystemSettingApp->getFevIcon() }}">
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url('assets/images/icons/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url('assets/images/icons/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url('assets/images/icons/favicon-16x16.png') }}">
+    {{-- <link rel="icon" type="image/png" sizes="32x32" href="{{ url('assets/images /icons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url('assets/images/icons/favicon-16x16.png') }}"> --}}
     <link rel="mask-icon" href="{{ url('assets/images/icons/safari-pinned-tab.svg') }}" color="#666666">
 
     <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
@@ -24,7 +28,12 @@
 
     <link rel="stylesheet" href="{{ url('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/plugins/magnific-popup/magnific-popup.css') }}">
+    <style type="text/css">
+        .btn-wishlist-add::before {
+            content: '\f233' !important;
 
+        }
+    </style>
     @yield('style')
 
 </head>
@@ -56,26 +65,28 @@
                                         role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
-                                        aria-controls="register" aria-selected="false">Register</a>
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register"
+                                        role="tab" aria-controls="register" aria-selected="false">Register</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel"
                                     aria-labelledby="signin-tab">
-                                    <form action="#">
+                                    <form action="#" method="POST" id="SubmitFormLogin">
+                                        {{ csrf_field() }}
+
 
                                         <div class="form-group">
-                                            <label for="singin-email">Username
-                                                or email address <span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" id="singin-email"
-                                                name="singin-email" required>
+                                            <label for="singin-email">Email Address <span
+                                                    style="color: red;">*</span></label>
+                                            <input type="text" class="form-control" id="singin-email" name="email"
+                                                required>
                                         </div>
                                         <div class="form-group">
                                             <label for="singin-password">Password
                                                 <span style="color: red;">*</span></label>
                                             <input type="password" class="form-control" id="singin-password"
-                                                name="singin-password" required>
+                                                name="password" required>
                                         </div>
                                         <div class="form-footer">
                                             <button type="submit" class="btn btn-outline-primary-2">
@@ -83,32 +94,33 @@
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input"
-                                                    id="signin-remember">
+                                                <input type="checkbox" name="is_remember"
+                                                    class="custom-control-input" id="signin-remember">
                                                 <label class="custom-control-label" for="signin-remember">Remember
                                                     Me</label>
                                             </div>
-                                            <a href="#" class="forgot-link">Forgot
+                                            <a href="{{ url('forgot-password') }}" class="forgot-link">Forgot
                                                 Your
                                                 Password?</a>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                <div class="tab-pane fade" id="register" role="tabpanel"
+                                    aria-labelledby="register-tab">
                                     <form action="#" method="POST" id="SubmitFormRegister">
-                                        {{csrf_field()}}
+                                        {{ csrf_field() }}
                                         <div class="form-group">
                                             <label for="register-name">Name
                                                 <span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" id="register-name" name="name"
-                                                required>
+                                            <input type="text" class="form-control" id="register-name"
+                                                name="name" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="register-email">Email Address
                                                 <span style="color: red;">*</span></label>
-                                            <input type="email" class="form-control" id="register-email" name="email"
-                                                required>
+                                            <input type="email" class="form-control" id="register-email"
+                                                name="email" required>
                                         </div>
 
                                         <div class="form-group">
@@ -124,8 +136,8 @@
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="register-policy"
-                                                    required>
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="register-policy" required>
                                                 <label class="custom-control-label" for="register-policy">I
                                                     agree
                                                     to
@@ -156,7 +168,7 @@
                             <img src="assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60"
                                 height="15">
                             <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
-                            <p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite
+                            <p>Subscribe to the ModWir eCommerce newsletter to receive timely updates from your favorite
                                 products.</p>
                             <form action="#">
                                 <div class="input-group input-group-round">
@@ -192,11 +204,10 @@
 
     <script src="{{ url('assets/js/main.js') }}"></script>
     <script type="text/javascript">
-        SubmitFormRegister
-    $('body').delegate('#SubmitFormRegister', 'submit' , function(e){
-        e.preventDefault();
+        $('body').delegate('#SubmitFormRegister', 'submit', function(e) {
+            e.preventDefault();
 
-         $.ajax({
+            $.ajax({
                 type: "POST",
                 url: "{{ url('auth_register') }}",
                 data: $(this).serialize(),
@@ -204,18 +215,70 @@
                 dataType: "json",
                 success: function(data) {
                     alert(data.message);
-                    if(data.status == true){
+                    if (data.status == true) {
                         location.reload();
 
                     }
-                   
+
                 },
                 error: function(data) {
 
                 }
             });
 
-    });
+        });
+        $('body').delegate('#SubmitFormLogin', 'submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('auth_login') }}",
+                data: $(this).serialize(),
+                // token:{{ csrf_field() }},
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == true) {
+                        location.reload();
+
+                    } else {
+                        alert(data.message);
+
+                    }
+
+                },
+                error: function(data) {
+
+                }
+            });
+
+        });
+        $('body').delegate('.addToWishlist', 'click', function(e) {
+            var product_id = $(this).attr('id');
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('add_to_wishlist') }}",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    product_id: product_id,
+
+                },
+                dataType: "json",
+                success: function(data) {
+
+                    if (data.is_wishlist == 0) {
+                        $('.addToWishlist' + product_id).removeClass('btn-wishlist-add');
+
+                    } else {
+                        $('.addToWishlist' + product_id).addClass('btn-wishlist-add');
+
+
+                    }
+                },
+
+            });
+
+        });
     </script>
 </body>
 

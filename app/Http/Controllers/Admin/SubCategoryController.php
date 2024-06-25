@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class SubCategoryController extends Controller
 {
@@ -29,17 +30,18 @@ class SubCategoryController extends Controller
     public function insert(Request $request)
     {
         request()->validate([
-            'slug' => 'required|unique:sub_categories',
             'name' => 'required|max:255',
             'meta_title' => 'required|max:255',
 
 
         ]);
         $sub_category = new SubCategory;
-
+        $nameSlug = trim($request->name);
 
         $sub_category->name = trim($request->name);
-        $sub_category->slug = trim($request->slug);
+        $sub_category->slug = Str::slug($nameSlug, "-");
+
+        $sub_category->name = trim($request->name);
         $sub_category->category_id = $request->category_id;
         $sub_category->meta_title = trim($request->meta_title);
         $sub_category->meta_keyword = trim($request->meta_keyword);
